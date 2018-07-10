@@ -1,0 +1,11 @@
+
+
+#import <UIKit/UIKit.h>
+
+@interface welcomepage : UIViewController
+@property (strong, nonatomic) IBOutlet UITextField *txt1;
+@property (strong, nonatomic) IBOutlet UITextField *txt2;
+@property (strong, nonatomic) IBOutlet UITextField *txt3;
+@property (strong, nonatomic) IBOutlet UITextField *txt4;
+
+@end
