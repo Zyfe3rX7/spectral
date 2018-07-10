@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="12120" systemVersion="16A323" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12088"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="loginview">
+            <connections>
+                <outlet property="txt1" destination="QGK-Wk-tDQ" id="8NO-ry-04u"/>
+                <outlet property="txt2" destination="fPC-YG-J5Q" id="N7T-ti-NP0"/>
+                <outlet property="txt3" destination="8tw-pn-6Gx" id="tsO-F4-x7l"/>
+                <outlet property="txt4" destination="ft4-sc-p3n" id="1vg-sL-U4Z"/>
+                <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="NAME" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bGS-vc-b3G">
+                    <rect key="frame" x="25" y="120" width="48" height="21"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                    <nil key="textColor"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="AGE" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eJI-33-BIq">
+                    <rect key="frame" x="25" y="187" width="33" height="21"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                    <nil key="textColor"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="USERNAME" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rEo-qF-Tjn">
+                    <rect key="frame" x="25" y="257" width="91" height="21"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                    <nil key="textColor"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="PASSWORD" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="m7Z-5T-qOO">
+                    <rect key="frame" x="25" y="322" width="93" height="21"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                    <nil key="textColor"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="QGK-Wk-tDQ">
+                    <rect key="frame" x="133" y="111" width="97" height="30"/>
+                    <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="97" id="7Ys-7e-HgB"/>
+                    </constraints>
+                    <nil key="textColor"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                    <textInputTraits key="textInputTraits"/>
+                </textField>
+                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="fPC-YG-J5Q">
+                    <rect key="frame" x="133" y="187" width="97" height="30"/>
+                    <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                    <nil key="textColor"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                    <textInputTraits key="textInputTraits"/>
+                </textField>
+                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="8tw-pn-6Gx">
+                    <rect key="frame" x="133" y="248" width="97" height="30"/>
+                    <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                    <nil key="textColor"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                    <textInputTraits key="textInputTraits"/>
+                </textField>
+                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="ft4-sc-p3n">
+                    <rect key="frame" x="133" y="317" width="97" height="30"/>
+                    <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                    <nil key="textColor"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                    <textInputTraits key="textInputTraits"/>
+                </textField>
+            </subviews>
+            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <constraints>
+                <constraint firstItem="QGK-Wk-tDQ" firstAttribute="leading" secondItem="fPC-YG-J5Q" secondAttribute="leading" id="3UB-fh-re3"/>
+                <constraint firstItem="8tw-pn-6Gx" firstAttribute="leading" secondItem="ft4-sc-p3n" secondAttribute="leading" id="7qj-Et-nfP"/>
+                <constraint firstItem="ft4-sc-p3n" firstAttribute="top" secondItem="8tw-pn-6Gx" secondAttribute="bottom" constant="39" id="HiO-Xf-wRa"/>
+                <constraint firstItem="rEo-qF-Tjn" firstAttribute="leading" secondItem="m7Z-5T-qOO" secondAttribute="leading" id="M27-Dv-KbC"/>
+                <constraint firstItem="fPC-YG-J5Q" firstAttribute="trailing" secondItem="8tw-pn-6Gx" secondAttribute="trailing" id="MUS-eL-wn3"/>
+                <constraint firstItem="eJI-33-BIq" firstAttribute="leading" secondItem="rEo-qF-Tjn" secondAttribute="leading" id="P2H-Aq-ipO"/>
+                <constraint firstItem="QGK-Wk-tDQ" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="111" id="QYu-Qw-abz"/>
+                <constraint firstItem="QGK-Wk-tDQ" firstAttribute="trailing" secondItem="fPC-YG-J5Q" secondAttribute="trailing" id="XjH-zc-gPW"/>
+                <constraint firstItem="m7Z-5T-qOO" firstAttribute="centerY" secondItem="ft4-sc-p3n" secondAttribute="centerY" id="ZPc-tk-pDq"/>
+                <constraint firstItem="fPC-YG-J5Q" firstAttribute="leading" secondItem="8tw-pn-6Gx" secondAttribute="leading" id="cMj-ct-cQD"/>
+                <constraint firstItem="eJI-33-BIq" firstAttribute="top" secondItem="bGS-vc-b3G" secondAttribute="bottom" constant="46" id="cki-Qv-HRd"/>
+                <constraint firstItem="8tw-pn-6Gx" firstAttribute="trailing" secondItem="ft4-sc-p3n" secondAttribute="trailing" id="dbr-eX-Ktg"/>
+                <constraint firstItem="bGS-vc-b3G" firstAttribute="leading" secondItem="eJI-33-BIq" secondAttribute="leading" id="deu-Xc-BQA"/>
+                <constraint firstItem="bGS-vc-b3G" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="25" id="elG-dD-ROz"/>
+                <constraint firstItem="bGS-vc-b3G" firstAttribute="bottom" secondItem="QGK-Wk-tDQ" secondAttribute="bottom" id="lH9-Ug-wad"/>
+                <constraint firstItem="ft4-sc-p3n" firstAttribute="leading" secondItem="m7Z-5T-qOO" secondAttribute="trailing" constant="15" id="niV-1t-dDw"/>
+                <constraint firstItem="eJI-33-BIq" firstAttribute="top" secondItem="fPC-YG-J5Q" secondAttribute="top" id="pfU-hK-KIu"/>
+                <constraint firstItem="rEo-qF-Tjn" firstAttribute="bottom" secondItem="8tw-pn-6Gx" secondAttribute="bottom" id="poG-aP-kEL"/>
+                <constraint firstItem="8tw-pn-6Gx" firstAttribute="top" secondItem="fPC-YG-J5Q" secondAttribute="bottom" constant="31" id="wVR-vA-M5W"/>
+            </constraints>
+        </view>
+    </objects>
+</document>
