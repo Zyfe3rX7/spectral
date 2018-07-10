@@ -1,0 +1,27 @@
+#import "GroupTable.h"
+
+#import "grptbleimg.h"
+
+@interface AppDelegate ()
+
+
+
+@end
+
+
+
+@implementation AppDelegate
+
+
+
+
+
+- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+
+    actswipe *obj=[[actswipe
+
+                  alloc]init];
+
+    UINavigationController *nav=[[UINavigationController alloc]initWithRootViewController:obj];
+
+    self.window.rootViewController=nav;
