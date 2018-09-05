@@ -1,0 +1,21 @@
+apiTableViewCell.h
+
+//  apiPOSTfresery78
+
+//
+
+//  Created by iROID Technologies on 6/20/18.
+
+//  Copyright © 2018 iroid. All rights reserved.
+
+//
+
+#import <UIKit/UIKit.h>
+
+@interface apiTableViewCell : UITableViewCell
+
+@property (strong, nonatomic) IBOutlet UILabel *lbltype;
+
+@property (strong, nonatomic) IBOutlet UILabel *lblValue;
+
+@end
