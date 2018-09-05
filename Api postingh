@@ -1,0 +1,289 @@
+freseryCat_Id_78.h
+
+//  apiPOSTfresery78
+
+//
+
+//  
+
+#import <UIKit/UIKit.h>
+
+@interface freseryCat_Id_78 : UIViewController
+
+@property (strong, nonatomic) IBOutlet UITextField *txtCatId;
+
+- (IBAction)btnGoAct:(id)sender;
+
+@property (strong, nonatomic) IBOutlet UITextView *txtview;
+
+@property (strong, nonatomic) IBOutlet UITableView *table;
+
+@end
+
+-------------------------------------------------------------------------
+
+//  freseryCat_Id_78.m
+
+//  apiPOSTfresery78
+
+//
+
+//  Created by iROID Technologies on 6/20/18.
+
+//  Copyright © 2018 iroid. All rights reserved.
+
+//
+
+#import "freseryCat_Id_78.h"
+
+#import "apiTableViewCell.h"
+
+@interface freseryCat_Id_78 ()<UITableViewDataSource,UITableViewDelegate>
+
+{
+
+    NSMutableDictionary *resp;
+
+    NSMutableArray *array1,*array2,*array3;
+
+    NSData *data1;
+
+    
+
+}
+
+@end
+
+@implementation freseryCat_Id_78
+
+- (void)viewDidLoad {
+
+    [super viewDidLoad];
+
+    // Do any additional setup after loading the view.
+
+    resp=[[NSMutableDictionary alloc]init];
+
+    _txtview.hidden=YES;
+
+    _table.hidden=YES;
+
+    
+
+    
+
+}
+
+- (void)didReceiveMemoryWarning {
+
+    [super didReceiveMemoryWarning];
+
+    // Dispose of any resources that can be recreated.
+
+}
+
+- (IBAction)btnGoAct:(id)sender {
+
+    
+
+    NSString *requstUrl=[NSString stringWithFormat:@"http://iroidtech.com/fresery/index.php?route=api/fresery/juiceType"];
+
+    
+
+    
+
+    NSString *postString=[NSStringstringWithFormat:@"category_id=%@",_txtCatId.text];
+
+    
+
+    NSData *returnData=[[NSData alloc]init];
+
+    
+
+    NSMutableURLRequest *request=[[NSMutableURLRequestalloc]initWithURL:[NSURL URLWithString:requstUrl]];
+
+    [request setHTTPMethod:@"POST"];
+
+    [request setValue:[NSString stringWithFormat:@"%lu", (unsigned long)[postString length]] forHTTPHeaderField:@"Content-length"];
+
+    [request setHTTPBody:[postString dataUsingEncoding:NSUTF8StringEncoding]];
+
+    
+
+    
+
+    returnData = [NSURLConnectionsendSynchronousRequest:request returningResponse: nilerror: nil];
+
+    resp=[NSJSONSerialization JSONObjectWithData:returnData options:NSJSONReadingMutableContainers error:nil];
+
+    array1=[resp valueForKey:@"data"];
+
+    array2=[[array1 objectAtIndex:0] valueForKey:@"NutritionFacts"];
+
+    array3=[[array1 objectAtIndex:1] valueForKey:@"description"];
+
+    data1=[resp valueForKey:@"status"];
+
+    NSLog(@"array3:%@",array3);
+
+    NSLog(@"array2:%@",array2);
+
+    _txtview.text=array3;
+
+    [_table reloadData];
+
+    _txtview.hidden=NO;
+
+    _table.hidden=NO;
+
+    
+
+}
+
+- (CGFloat)tableView:(UITableView *)aTableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+
+    
+
+            if(indexPath.row==0)
+
+            {return 100; }// first row is 123pt high
+
+            else{
+
+            return 100; // all other rows are 40pt high
+
+    }
+
+}
+
+//Table Configuration
+
+- (NSInteger)numberOfSectionsInTableView:(UITableView*)tableView
+
+{
+
+    return 1;
+
+}
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+
+{
+
+    return array2.count;
+
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+
+{
+
+    //static NSString *cellid=@"Cell Identifier";
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    apiTableViewCell *cell=[tableView dequeueReusableCellWithIdentifier:@"apiTableViewCell"];
+
+    if(cell==nil)
+
+    {
+
+        cell=[[UITableViewCell alloc]initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"apiTableViewCell"];
+
+    }
+
+    if(indexPath.row==0)
+
+    {
+
+        
+
+        apiTableViewCell *cell=[tableView dequeueReusableCellWithIdentifier:@"apiTableViewCell"];
+
+        cell.lbltype.text=[[array2 objectAtIndex:0]valueForKey:@"type"];
+
+        cell.lblValue.text=[[array2 objectAtIndex:0]valueForKey:@"value"];
+
+        
+
+        
+
+    }
+
+    else if (indexPath.row==1)
+
+    {
+
+        cell.lbltype.text=[[array2 objectAtIndex:1]valueForKey:@"type"];
+
+        cell.lblValue.text=[[array2 objectAtIndex:1]valueForKey:@"value"];
+
+    }
+
+    else if (indexPath.row==2)
+
+    {
+
+        cell.lbltype.text=[[array2 objectAtIndex:2]valueForKey:@"type"];
+
+        cell.lblValue.text=[[array2 objectAtIndex:2]valueForKey:@"value"];
+
+    }
+
+    else if (indexPath.row==3)
+
+    {
+
+        cell.lbltype.text=[[array2 objectAtIndex:3]valueForKey:@"type"];
+
+        cell.lblValue.text=[[array2 objectAtIndex:3]valueForKey:@"value"];
+
+    }
+
+    else if (indexPath.row==4)
+
+    {
+
+        cell.lbltype.text=[[array2 objectAtIndex:4]valueForKey:@"type"];
+
+        cell.lblValue.text=[[array2 objectAtIndex:4]valueForKey:@"value"];
+
+    }
+
+    else if (indexPath.row==5)
+
+    {
+
+        cell.lbltype.text=[[array2 objectAtIndex:5]valueForKey:@"type"];
+
+        cell.lblValue.text=[[array2 objectAtIndex:5]valueForKey:@"value"];
+
+    }
+
+    else
+
+    {
+
+        cell.lbltype.text=[[array2 objectAtIndex:6]valueForKey:@"type"];
+
+        cell.lblValue.text=[[array2 objectAtIndex:6]valueForKey:@"value"];
+
+    }
+
+      
+
+    return cell;
+
+    
+
+}
+
+@end
