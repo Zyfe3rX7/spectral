@@ -1,0 +1,189 @@
+
+import UIKit
+import SwiftyJSON
+import SDWebImage
+import JitsiMeet
+
+
+var consultonline: Bool?
+
+class HomeScreenViewController: BaseViewController  {
+
+    
+    
+//    var PatientRespons : PatientDetails? = nil
+    
+    
+    
+    override func viewWillAppear(_ animated: Bool) {
+//        self.navigationController?.isNavigationBarHidden = true
+        
+        
+    }
+    
+   // @IBOutlet weak var lblName: UILabel!
+    
+   // @IBOutlet weak var lblPatientName: UICollectionView!
+    @IBOutlet weak var HomeScreenCollectionViewObj: UICollectionView!
+   // @IBOutlet weak var lblName: UILabel!
+    
+      let arrayDeffinition = ["I need to book an OP consultation", "I need to consult a doctor online", "Find Near by Tele Medicine Centers", "Book a test, checkup and scans ", "Locate Hospitals near me", "I need to book a specialist OP consultation", "I need to buy medicines online"]
+    let arrayBgImage = ["OpCunsult", "DoctorOnline", "Location", "LabTes", "LocateHospital", "OpSpecialist", "MedicineOnline"]
+     let arrayHomeImage = ["Homecalender", "HomeOnline", "Homelocation", "HomeLab", "HomeHospital", "homeOpSpecialist", "HomeMedicinBuy"]
+    enum sectios : Int {
+        case section0, section1, section2, section3, section4, section5, section6, section7 //,
+    }
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        
+        
+        //navigationBar.topItem.title = "some title"
+        navigationController?.title = "Home"
+        
+//        let leftButton = UIBarButtonItem(title: "Edit", style: .plain, target: self, action: #selector(self.someFunc))
+//        self.navigationItem.leftBarButtonItem = leftButton
+        
+        
+        //getUserDetails()
+      
+
+    }
+
+    
+    @objc func someFunc() {
+        
+        print("It Works")
+    }
+ 
+    override func didReceiveMemoryWarning() {
+        super.didReceiveMemoryWarning()
+        // Dispose of any resources that can be recreated.
+    }
+    
+
+    /*
+    // MARK: - Navigation
+
+    // In a storyboard-based application, you will often want to do a little preparation before navigation
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        // Get the new view controller using segue.destinationViewController.
+        // Pass the selected object to the new view controller.
+    }
+    */
+
+}
+extension HomeScreenViewController:UICollectionViewDelegateFlowLayout,UICollectionViewDelegate,UICollectionViewDataSource {
+
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return arrayDeffinition.count
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "HomeScreenCollectionViewCell" , for: indexPath) as! HomeScreenCollectionViewCell
+        
+        cell.LblBgText.text = arrayDeffinition [indexPath.item]
+        cell.imgIconObj.image=UIImage(named: arrayHomeImage[indexPath.item])
+        cell.ImgBgObj.image = UIImage(named: arrayBgImage[indexPath.item])
+        
+        return cell
+        
+    }
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        // let yourWidth = collectionView.bounds.width/2.0
+        let yourWidth = collectionView.frame.size.width/2.0-10
+        //let yourHeight = yourWidth
+        let yourHeight = collectionView.frame.size.width/2
+        return CGSize(width: yourWidth, height: yourHeight)
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
+
+        switch kind {
+        case UICollectionElementKindSectionHeader:
+            let reusableview = collectionView.dequeueReusableSupplementaryView(ofKind: UICollectionElementKindSectionHeader, withReuseIdentifier: "HeaderCollectionReusableView", for: indexPath) as! HeaderCollectionReusableView
+            //do other header related calls or settups
+            return reusableview
+
+
+        default:  fatalError("Unexpected element kind")
+        }
+    }
+
+    
+        func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
+            return CGSize(width: collectionView.frame.width, height: 50) //add your height here
+    
+    
+    }
+    
+
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "HomeScreenCollectionViewCell" , for: indexPath as IndexPath) as! HomeScreenCollectionViewCell
+        switch indexPath.item {
+        case sectios.section0.rawValue:
+            if(indexPath.item == 0){
+                print("Cell \(indexPath.row) selected")
+                //performSegue(withIdentifier: "consultdoconline", sender: self)
+            }
+        case sectios.section1.rawValue:
+            if(indexPath.item == 1){
+                cell.isSelected = true
+                print("Cell \(indexPath.row) selected")
+                performSegue(withIdentifier: "Doctorsearch", sender: self)
+                consultonline = true
+                
+//                let storyBoard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
+//                let newViewController = storyBoard.instantiateViewController(withIdentifier: "doctorviewnavcontroller") as! UINavigationController
+//                let docsearch  =  newViewController.viewControllers[0] as! DoctorSearchViewController
+                //docsearch.delegate = self
+                
+                //self.present(newViewController, animated: true, completion: nil)
+            }
+        case sectios.section2.rawValue:
+            if(indexPath.item == 2){
+                cell.isSelected = true
+                print("Cell \(indexPath.row) selected")
+                //  performSegue(withIdentifier: "consultdoconline", sender: self)
+            }
+        case sectios.section3.rawValue:
+            if(indexPath.item == 3){
+                cell.isSelected = true
+                print("Cell \(indexPath.row) selected")
+                //performSegue(withIdentifier: "consultdoconline", sender: self)
+            }
+        case sectios.section4.rawValue:
+            if(indexPath.item == 4){
+                cell.isSelected = true
+                print("Cell \(indexPath.row) selected")
+               // performSegue(withIdentifier: "hospitallist", sender: self)
+            }
+        case sectios.section5.rawValue:
+            if(indexPath.item == 5){
+                cell.isSelected = true
+                print("Cell \(indexPath.row) selected")
+               // performSegue(withIdentifier: "departmentview", sender: self)
+            }
+        case sectios.section6.rawValue:
+            if(indexPath.item == 6){
+                cell.isSelected = true
+                print("Cell \(indexPath.row) selected")
+                // performSegue(withIdentifier: "hospitallist", sender: self)
+            }
+        default: return ()
+            
+        }
+
+    
+    
+    //
+    
+    }
+}
+
+
+
+
