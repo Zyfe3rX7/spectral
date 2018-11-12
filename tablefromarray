@@ -1,0 +1,197 @@
+import UIKit
+import Alamofire
+import FacebookLogin
+import SwiftyJSON
+import FBSDKLoginKit
+import FacebookCore
+import GoogleSignIn
+import GTMOAuth2
+
+var editprofile : Bool?
+
+class ProfileViewViewController: UIViewController , UITableViewDataSource , UITableViewDelegate{//UIImagePickerControllerDelegate, UINavigationControllerDelegate  {
+    
+    
+    @IBOutlet weak var profileimage: UIImageView!
+
+    @IBOutlet weak var btneditprofile: UIButton!
+    var imagePicker = UIImagePickerController()
+    //let userId = UserDefaults.standard.string(forKey: "PatientId")
+    
+    let arrayImages = ["profilepassport", "profilecalender", "profilerecord", "profileprescription", "profilelabtest", "profileinfo", "profilelogout"]
+    
+    let arrayNames = ["QuikDr Passport", "My Appointments", "My Health Record", "My Prescription", "My Lab Tests", "QuikDr Info", "Logout"]
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return arrayNames.count
+    }
+    
+    
+    
+    @IBAction func editprofileaction(_ sender: Any) {
+        editprofile = true
+     //   performSegue(withIdentifier: "editprofilesegue", sender: self)
+        
+        if let viewController = UIStoryboard(name: "second", bundle: nil).instantiateViewController(withIdentifier: "PatientProfileDataViewController") as? PatientProfileDataViewController {
+//            viewController.newsObj = newsObj
+            if let navigator = navigationController {
+                navigator.pushViewController(viewController, animated: true)
+            }
+        }
+        
+//        let storyBoard : UIStoryboard = UIStoryboard(name: "second", bundle:nil)
+//        let nextViewController = storyBoard.instantiateViewController(withIdentifier: "PatientProfileDataViewController") as! PatientProfileDataViewController
+//        self.present(nextViewController, animated:true, completion:nil)
+//        self.navigationController?.pushViewController(<#T##viewController: UIViewController##UIViewController#>, animated: <#T##Bool#>)
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        
+        let cell = tableView.dequeueReusableCell(withIdentifier: "ProfileTableViewCell" , for: indexPath) as! ProfileTableViewCell
+        if indexPath.row == 6{
+            cell.nameLabel.text = arrayNames [indexPath.item]
+            cell.photoImageView.image=UIImage(named: arrayImages[indexPath.item])
+            cell.btnGo!.isHidden = true
+            cell.btnGo!.image = nil
+        }
+        else{
+            cell.nameLabel.text = arrayNames [indexPath.item]
+            cell.photoImageView.image=UIImage(named: arrayImages[indexPath.item])
+        }
+        return cell
+        
+    }
+    
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath)
+    {
+        
+        let row = indexPath.row
+        
+        print("hiiiiiiiiii", row)
+        if row == 0
+        {
+            performSegue(withIdentifier: "quikdrpassport", sender: self)
+
+        }
+        if row == 1
+        {
+            performSegue(withIdentifier: "AppointmentList", sender: self)
+            
+        }
+        if row == 2
+        {
+            performSegue(withIdentifier: "healthrecord", sender: self)
+            
+        }
+        if row == 3
+        {
+            performSegue(withIdentifier: "prescriptionlist", sender: self)
+            
+        }
+        if row == 4
+        {
+            performSegue(withIdentifier: "labtest", sender: self)
+            
+        }
+        if row == 5
+        {
+            performSegue(withIdentifier: "quikdrinfo", sender: self)
+            
+        }
+        if row == 6
+        {
+            let manager = FBSDKLoginManager()
+            manager.logOut()
+            FBSDKAccessToken.setCurrent(nil)
+            FBSDKProfile.setCurrent(nil)
+            print("",FBSDKAccessToken.self)
+            GIDSignIn.sharedInstance().signOut()
+            var token =  UserDefaults.standard.string(forKey: "accessToken")
+            print("******Current token 11111 is",token)
+            let cleanUserDefualt = UserDefaults.standard
+            //token = cleanUserDefualt.string(forKey:"accessToken")
+            cleanUserDefualt.removeObject(forKey:"accessToken")
+            cleanUserDefualt.removeObject(forKey:"firstName")
+            cleanUserDefualt.removeObject(forKey:"lastName")
+            cleanUserDefualt.removeObject(forKey:"primaryContact")
+            cleanUserDefualt.removeObject(forKey:"bloodGroup")
+            cleanUserDefualt.removeObject(forKey:"gender")
+            cleanUserDefualt.removeObject(forKey:"dob")
+            cleanUserDefualt.removeObject(forKey:"address")
+            cleanUserDefualt.removeObject(forKey:"nationality")
+            cleanUserDefualt.removeObject(forKey:"profilephotourl")
+            cleanUserDefualt.removeObject(forKey:"id")
+            print("******Current token 11111 is",token)
+            
+//            let domain = Bundle.main.bundleIdentifier!
+//            UserDefaults.standard.removePersistentDomain(forName: domain)
+//            UserDefaults.standard.synchronize()
+//            print(Array(UserDefaults.standard.dictionaryRepresentation().keys).count)
+//
+            
+
+            func resetDefaults() {
+                let defaults = UserDefaults.standard
+                let dictionary = defaults.dictionaryRepresentation()
+                dictionary.keys.forEach { key in
+                    defaults.removeObject(forKey: key)
+                }
+            }
+ 
+            print("******current token 222222 is",token)
+            performSegue(withIdentifier: "logout", sender: self)
+            
+        }
+        
+    }
+    
+
+    @IBOutlet weak var lblname: UILabel!
+    @IBOutlet weak var lblPatientId: UILabel!
+    override func viewDidLoad() {
+        super.viewDidLoad()
+     
+      let pId = UserDefaults.standard.string(forKey: "PatientId")
+      let fName = UserDefaults.standard.string(forKey: "FirstName")
+       let sName = UserDefaults.standard.string(forKey: "LastName")
+       let imgUrl = UserDefaults.standard.string(forKey: "ImageURL")
+        let imgurl2 = UserDefaults.standard.string(forKey: "profilephotourl")
+       // UserDefaults.standard.set(profilephotourl, forKey: "profilephotourl")
+        
+    
+        
+      profileimage.sd_setImage(with: URL(string: imgurl2 ?? ""), placeholderImage: UIImage(named: "placeholder.png"))
+        
+        lblname.text = fName! + sName!
+        if (pId == nil)
+        {
+            lblPatientId.text = "Generating"
+        }
+        else
+        {
+        lblPatientId.text = pId!
+        }
+        
+
+    }
+    override func viewWillLayoutSubviews() {
+        self.profileimage.layer.cornerRadius = self.profileimage.frame.size.width / 2;
+        
+        print(profileimage.frame)
+        self.profileimage.clipsToBounds = true;
+        
+        let imgUrl = UserDefaults.standard.string(forKey: "profilephotourl")
+        profileimage.sd_setImage(with: URL(string: imgUrl ?? ""), placeholderImage: UIImage(named: "placeholder.png"))
+    }
+
+    
+    override func didReceiveMemoryWarning() {
+        super.didReceiveMemoryWarning()
+        // Dispose of any resources that can be recreated.
+    }
+    
+    
+    
+ 
+}
