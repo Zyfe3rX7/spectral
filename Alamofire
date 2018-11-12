@@ -1,0 +1,265 @@
+import JWTDecode
+import Alamofire
+
+//IMAGE UPLOAD
+
+
+func uploadDefect(){
+            
+           let image = self.imgProfilePic.image
+//            guard let imgData = image(.medium) else {return}
+            var imgData = UIImageJPEGRepresentation(image!, 0.2)!
+            print(imgData)
+            let urlUpload = Constants.base_url+"/uploads"
+            
+            let pId = UserDefaults.standard.string(forKey: "id")
+          
+            let id = pId!
+            print("(&*^%&&^*%&^&%*^%%^((%*(%%(^*(^IDIDIDIDI",id)
+            let permissions = "patient"
+            let username = "default"
+            let password = "default"
+            let parameters : [String:Any] = ["uri" : imgData ,"id" : id, "permissions": "patient"] //,"tenant_id" : tenantID]
+            
+            
+            
+            var headers: HTTPHeaders = [:]
+             let accessToken =  UserDefaults.standard.string(forKey: "accessToken")
+            var headers3 = ["api-header-security":"C1kxIHN1D81zT7DXFQINoiQKDRXIMLCWTugbg9CorYg5SIxHsBBLNvNbebCxoC1qWhtx","content-type":"application/json","Authorization":accessToken ?? ""]
+            
+            if let authorizationHeader = Request.authorizationHeader(user: username, password: password) {
+                headers[authorizationHeader.key] = authorizationHeader.value
+                print("(*&(&*(*&&*(&*^(&*^^&(*^&(*(*&^",authorizationHeader)
+            }
+            
+            Alamofire.upload(
+                multipartFormData: { multipartFormData in
+                    
+                    for (key, value) in parameters {
+                        multipartFormData.append("\(value)".data(using: String.Encoding.utf8)!, withName: key as String)
+                    }
+                    
+                    multipartFormData.append(imgData, withName: "uri", fileName: "File", mimeType: "image/png")
+                    
+                    
+            },
+                to: urlUpload,
+                headers: headers3,
+                encodingCompletion: { encodingResult in
+                    switch encodingResult {
+                    case .success(let upload, _, _):
+                        upload.responseJSON { response in
+                            debugPrint(response)
+                            print("(*&&(&(&*)&*(*&)*&*)&(",response.response?.statusCode)
+                            if (response.response?.statusCode == 201)
+                            {
+                            let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
+                                            let nextViewController = storyBoard.instantiateViewController(withIdentifier: "TabbarController") as! TabbarController
+                                            self.present(nextViewController, animated:true, completion:nil)
+                            }
+                        }
+                    case .failure(let encodingError):
+                        print(encodingError)
+                    }
+            }
+            )
+            
+            
+        }
+        
+        
+        GET & POST
+        
+        
+        
+        import Foundation
+import Alamofire
+import SwiftyJSON
+class AppointmentListApiManager {
+    
+    static let sharedInstance =  AppointmentListApiManager()
+    
+    
+    
+    
+    func getAppointmentList(headers:Dictionary<String, String>? ,url:String, success: @escaping(_ json : Any, _ statusCode:Int )->() , failure:@escaping(_ error : NSError )->() )  {
+        
+        
+        let PatientId = UserDefaults.standard.string(forKey: "PatientId")
+        let url=Constants.base_url+"/appointments?patientsId="+PatientId!
+        
+        
+        
+        
+        
+        Alamofire.request(url, method: .get, parameters: nil, encoding: JSONEncoding.default, headers: headers).responseJSON { (response) in
+            
+            // let dataR:NSArray=response.data
+            
+            switch response.result {
+                
+                
+                
+                
+            case .success(let dataR):
+                
+                let json:NSDictionary=dataR as! NSDictionary;
+                
+                
+                // let json:NSDictionary = JSON(dataR)
+                print("Get appointment  List--->>>>",json)
+                //
+                if response.response?.statusCode == 200 {
+                    
+                    let apntmntList = AppointmentList.init(dictionary: json)
+                    //                     apntmntList = try? JSONDecoder().decode(OrganizationResponse.self, from: response.data!)
+                    //                    let person = try! JSONDecoder().decode(DecodableWrapper.self, from: exampleJSON).base
+                    //                    print("person: \(person)")
+                    
+                    //
+                    //                print("Parsed Items-->>",photoObject!)
+                    success(apntmntList ?? [], (response.response?.statusCode)!)
+                    
+                }
+                else if response.response?.statusCode == 401 {
+                    success(json, (response.response?.statusCode)!)
+                    
+                }
+                
+                break
+                
+                
+                
+                
+            case .failure(let error):
+                
+                print("Get Appointment Api call Failed--->>>",error.localizedDescription)
+                failure(error as NSError)
+                break
+            }
+            
+        }
+        
+    }
+        
+        func getpatient(headers:Dictionary<String, String>? ,url:String, success: @escaping(_ json : Any, _ statusCode:Int )->() , failure:@escaping(_ error : NSError )->() )  {
+            
+            
+            let PatientId = UserDefaults.standard.string(forKey: "PatientId")
+            //let url=Constants.base_url+"/appointments?patientsId="+PatientId!
+            
+            
+            
+            
+            
+            Alamofire.request(url, method: .get, parameters: nil, encoding: JSONEncoding.default, headers: headers).responseJSON { (response) in
+                
+                // let dataR:NSArray=response.data
+                
+                switch response.result {
+                    
+                    
+                    
+                    
+                case .success(let dataR):
+                    
+                    let json:NSDictionary=dataR as! NSDictionary;
+                    
+                    
+                    // let json:NSDictionary = JSON(dataR)
+                    print("Get appointment  List--->>>>",json)
+                    //
+                    if response.response?.statusCode == 200 {
+                        
+                        let apntmntList = AddPatient.init(dictionary: json)
+                        //                     apntmntList = try? JSONDecoder().decode(OrganizationResponse.self, from: response.data!)
+                        //                    let person = try! JSONDecoder().decode(DecodableWrapper.self, from: exampleJSON).base
+                        //                    print("person: \(person)")
+                        
+                        //
+                        //                print("Parsed Items-->>",photoObject!)
+                        success(apntmntList ?? [], (response.response?.statusCode)!)
+                        
+                    }
+                    else if response.response?.statusCode == 401 {
+                        success(json, (response.response?.statusCode)!)
+                        
+                    }
+                    
+                    break
+                    
+                    
+                    
+                    
+                case .failure(let error):
+                    
+                    print("Get Appointment Api call Failed--->>>",error.localizedDescription)
+                    failure(error as NSError)
+                    break
+                }
+                
+            }
+    
+    
+
+    
+}
+    func patientUHID(headers:Dictionary<String, String>? ,params:Dictionary<String, Any>?, success: @escaping(_ json : Any, _ statusCode:Int )->() , failure:@escaping(_ error : NSError )->() )  {
+        let url = Constants.base_url
+        
+        
+        
+        Alamofire.request(url+"/authentication", method: .post, parameters: params, encoding: JSONEncoding.default, headers: nil).responseJSON { (response) in
+            
+            switch response.result
+            {
+           
+                
+            case .success(let json):
+                if response.response?.statusCode == 201 {
+                    let jsonData : [String: String] = json as! [String : String]
+                    
+                    print(jsonData)
+                    
+                    
+                   
+                    success(jsonData, (response.response?.statusCode)!)
+                }
+                   
+                    
+                else if response.response?.statusCode == 401
+                {
+                    let json = JSON(json)
+                    success(json, (response.response?.statusCode)!)
+                    
+                    
+                }
+                
+                break
+                
+                
+                
+                
+            case .failure(let error):
+                
+                failure(error as NSError)
+                
+                
+                
+                
+            }
+            
+        }
+        
+        
+    }
+
+        
+        
+        
+        
+        
+        
+        
+        
+        
