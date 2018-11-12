@@ -1,0 +1,153 @@
+
+import UIKit
+
+class QuikDrInfoViewController: UIViewController {
+      enum sectios : Int {
+        case ShareSection, NotificationSection, AboutSection
+    }
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        
+          // self.tableView.tableFooterView = UIView()
+        
+     
+
+    }
+
+    override func didReceiveMemoryWarning() {
+        super.didReceiveMemoryWarning()
+        // Dispose of any resources that can be recreated.
+    }
+    
+
+
+}
+extension QuikDrInfoViewController: UITableViewDelegate,UITableViewDataSource {
+    func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+        return 6
+    }
+    func numberOfSections(in tableView: UITableView) -> Int {
+        return 3
+    }
+    
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        
+        if (sectios.ShareSection.rawValue == section)
+        {
+            return 2
+        }
+        if (sectios.NotificationSection.rawValue == section)
+        {
+            return 2
+        }
+        
+        if (sectios.AboutSection.rawValue == section)
+        {
+            return 5
+        }
+       return 0
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        switch indexPath.section {
+        case sectios.ShareSection.rawValue:
+            let cell = tableView.dequeueReusableCell(withIdentifier: "QuikDrInfoSharTableViewCell") as! QuikDrInfoSharTableViewCell
+            if(indexPath.row == 0){
+                cell.aboutlbl.text = "Rate QuikDr"
+                cell.aboutlbl.text = NSLocalizedString("Rate_Dr_Title",comment : "Rate QuikDr")
+
+            }
+            if(indexPath.row == 1){
+                cell.aboutlbl.text = "Invite Friends & Family"
+                cell.aboutlbl.text = NSLocalizedString("Invitefrndfmly_title",comment : "Invite Friends & Family")
+
+
+            }
+              return cell
+            
+        case sectios.NotificationSection.rawValue:
+            let cell = tableView.dequeueReusableCell(withIdentifier: "QuikDrInfoNotiTableViewCell") as! QuikDrInfoNotiTableViewCell
+            if(indexPath.row == 0){
+                cell.notificationlbl.text = "Notification Sound"
+                cell.notificationlbl.text = NSLocalizedString("NotifSound_title",comment : "Notification Sound")
+
+                cell.notificationswitch.tag = 100
+        
+            }
+            if(indexPath.row == 1){
+                cell.notificationlbl.text = "Stop Notification"
+                cell.notificationlbl.text = NSLocalizedString("StopNotfi_title",comment : "Stop Notification")
+
+            }
+            return cell
+        case sectios.AboutSection.rawValue:
+            let cell = tableView.dequeueReusableCell(withIdentifier: "QuikDrInfoAboutTableViewCell") as! QuikDrInfoAboutTableViewCell
+            if(indexPath.row == 0){
+                cell.aboutlbl.text = "About QuikDr"
+                cell.aboutlbl.text = NSLocalizedString("AbtQikDr_title",comment : "About QuikDr")
+
+
+            }
+            if(indexPath.row == 1){
+                cell.aboutlbl.text = "Terms & Conditions"
+                cell.aboutlbl.text = NSLocalizedString("TermCondi_title",comment : "Terms & Conditions")
+
+
+            }
+            if(indexPath.row == 2){
+                cell.aboutlbl.text = "Privacy Policy"
+                cell.aboutlbl.text = NSLocalizedString("Privacy_title",comment : "Privacy Policy")
+
+
+            }
+            if(indexPath.row == 3){
+                cell.aboutlbl.text = "Report Issues"
+                cell.aboutlbl.text = NSLocalizedString("RprtIssues_title",comment : "Report Issues")
+
+
+            }
+            if(indexPath.row == 4){
+                cell.aboutlbl.text = "Help & Support"
+                cell.aboutlbl.text = NSLocalizedString("HlpnSupp_title",comment : "Help & Support")
+
+
+            }
+                        return cell
+            
+        default:
+            return UITableViewCell()
+
+            
+    }
+    }
+        
+        func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+            
+            switch section {
+            case sectios.ShareSection.rawValue :
+                return "Share"
+            case sectios.NotificationSection.rawValue :
+                return "Notification Settings"
+            case sectios.AboutSection.rawValue :
+                return "About"
+
+            default:
+                return ""
+                
+            }
+            
+        }
+    
+
+
+
+    
+    
+    
+    
+    
+    
+}
+
