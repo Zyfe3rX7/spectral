@@ -84,3 +84,39 @@ profileimage.sd_setImage(with: URL(string: imgurl2 ?? ""), placeholderImage: UII
 
 
 
+string editiing
+
+extension String
+{
+    func trim() -> String
+    {
+        return self.trimmingCharacters(in: CharacterSet.whitespaces)
+    }
+}
+
+
+string splitting
+
+            let word = currentdate
+            if let index = word?.range(of: ".")?.lowerBound {
+                let substring = word![..<index]
+                let string = String(substring)
+                print(string)  // "ora"
+                currentime = string
+            }
+            
+            
+            let dateArray = prescripts.createdAt?.components(separatedBy: "T")
+            cell.datelbl.text = (dateArray?.count)! > 0 ? dateArray![0] : ""
+            
+            let dateArray2 = currentime?.components(separatedBy: "T")
+            cell.timelbl.text = (dateArray2?.count)! > 0 ? dateArray2![1] : ""
+          //  cell.datelbl.text = prescripts.createdAt
+         }
+        
+        
+ 
+
+        return cell
+    }
+    
