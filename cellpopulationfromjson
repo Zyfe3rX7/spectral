@@ -1,0 +1,114 @@
+import UIKit
+
+class PrescriptionViewController: BaseViewController,UITableViewDelegate,UITableViewDataSource {//,UIViewController
+    
+    @IBOutlet weak var prescirptionstableview: UITableView!
+    var priscrips : [PrescriptionsData]? = []
+    var currentime: String?
+    var usersArray : Array = [["first_name": "Ram", "last_name": "Ram"], ["first_name" : "bill", "last_name" : "gates"], ["first_name" : "steve", "last_name" : "jobs"], ["first_name" : "mark", "last_name" : "zuckerberg"], ["first_name" : "anthony", "last_name" : "quinn"]]
+    
+    
+    @IBOutlet weak var precrec: UITableView!
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        let nib = UINib.init(nibName: "CommonListTableViewCell", bundle: nil)
+        self.precrec.register(nib, forCellReuseIdentifier: "CommonListTableViewCell")
+        getpriscription()
+        
+        // Do any additional setup after loading the view.
+    }
+    
+    override func didReceiveMemoryWarning() {
+        super.didReceiveMemoryWarning()
+        // Dispose of any resources that can be recreated.
+    }
+    
+    
+    // MARK: - UITableView delegate
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return (priscrips?.count)!
+    }
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 100
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        
+        
+        
+        
+        
+        let cell = tableView.dequeueReusableCell(withIdentifier: "CommonListTableViewCell", for: indexPath) as! CommonListTableViewCell
+        
+        if (priscrips?.count)! > 0
+        {
+            let prescripts = priscrips![indexPath.row]
+            cell.lbl12.text = prescripts.doctorFirstName
+            cell.lbl22.text = "\(prescripts.appointmentsId!)"
+            
+            
+            var currentdate = prescripts.createdAt?.trim()
+            print(currentdate)
+            
+            let word = currentdate
+            if let index = word?.range(of: ".")?.lowerBound {
+                let substring = word![..<index]
+                let string = String(substring)
+                print(string)  // "ora"
+                currentime = string
+            }
+            
+            
+            let dateArray = prescripts.createdAt?.components(separatedBy: "T")
+            cell.datelbl.text = (dateArray?.count)! > 0 ? dateArray![0] : ""
+            
+            let dateArray2 = currentime?.components(separatedBy: "T")
+            cell.timelbl.text = (dateArray2?.count)! > 0 ? dateArray2![1] : ""
+          //  cell.datelbl.text = prescripts.createdAt
+         }
+        
+        
+ 
+
+        return cell
+    }
+    
+    func getpriscription(){
+        
+        self.showActivityIndicator()
+        let headers = getApiHeaderPrescrptions()
+        
+        let presciptUrl = Constants.base_url + "/prescriptions"
+        
+        UserDetailsApiManager.sharedInstance.getUserPrescriptions(  headers: headers as? Dictionary<String, String>, url: presciptUrl, success: { (response, code) in
+            
+            self.priscrips =  response as? [PrescriptionsData]
+            let prescriptions = [self.priscrips]
+            print("191919191911919199191919191",prescriptions)
+             self.prescirptionstableview.reloadData()
+            
+            self.hideActivityIndicator()
+            guard code == 200 else {
+                self.showAlert(title: "Alert", message: "You currently have no prescriptions", okAction: {
+                    
+                })
+                return
+            }
+            print("> Departments ",[self.priscrips])
+            
+            
+        }) { (error) in
+            print("Error------>",error)
+        }
+
+    }
+}
+
+extension String
+{
+    func trim() -> String
+    {
+        return self.trimmingCharacters(in: CharacterSet.whitespaces)
+    }
+}
