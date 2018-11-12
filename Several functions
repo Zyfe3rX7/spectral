@@ -1,0 +1,86 @@
+get
+var token =  UserDefaults.standard.string(forKey: "accessToken")
+put
+userDefult.setValue(token, forKey: "access_tocken")
+                                        userDefult
+clear
+
+let cleanUserDefualt = UserDefaults.standard
+cleanUserDefualt.string(forKey:"accessToken")
+
+
+segue
+1) 
+        performSegue(withIdentifier: "segue", sender: self)
+2)		let storyBoard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
+                        let newViewController = storyBoard.instantiateViewController(withIdentifier: "RegisterViewController") as! RegisterViewController
+
+3)		viewControllerYouWantToPresent = self.storyboard?.instantiateViewController(withIdentifier: "profiledatapusher")
+self.present(viewControllerYouWantToPresent!, animated: true, completion: nil)
+                    
+4) 
+            
+            let destinationVc = AppointmentsViewController()
+            destinationVc.schedulesList = schedulesListResponse
+            self.navigationController?.pushViewController(destinationVc, animated: true)
+
+5)		let newViewController = TimeSlotsTableViewController()
+        self.navigationController?.pushViewController(newViewController, animated: true)
+
+
+
+
+decode user ID from access token
+
+let UsersId = try decode(jwt: token!)
+                            print(UsersId)
+                            //UserDefaults.standard.set(UsersId, forKey: "UserId")
+                            let usertypeBody = UsersId.body
+                            let userid = usertypeBody["userId"]
+                            print(userid!)
+                            let PatientId = userid!
+                            UserDefaults.standard.set(userid,forKey:"PatientId")
+                            UserDefaults.standard.set(PatientId, forKey: "userId")
+                            
+
+check if field is empty
+
+if  (txtNewPass.text?.isEmpty)!
+{
+do stuff
+}
+
+
+POPUP
+
+func showAnimate()
+    {
+        self.view.transform = CGAffineTransform(scaleX: 1.3, y: 1.3)
+        self.view.alpha = 0.0;
+        UIView.animate(withDuration: 0.25, animations: {
+            self.view.alpha = 1.0
+            self.view.transform = CGAffineTransform(scaleX: 1.0, y: 1.0)
+        });
+    }
+    
+    func removeAnimate()
+    {
+        UIView.animate(withDuration: 0.25, animations: {
+            self.view.transform = CGAffineTransform(scaleX: 1.3, y: 1.3)
+            self.view.alpha = 0.0;
+        }, completion:{(finished : Bool)  in
+            if (finished)
+            {
+                self.view.removeFromSuperview()
+            }
+        });
+    }
+    
+
+
+SDIMAGE
+
+profileimage.sd_setImage(with: URL(string: imgurl2 ?? ""), placeholderImage: UIImage(named: "placeholder.png"))
+
+
+
