@@ -1,0 +1,276 @@
+
+
+import UIKit
+import MobileCoreServices
+import AVFoundation
+import Photos
+import Alamofire
+
+class SecondViewController: UIViewController {
+    
+    // UIButton
+    @IBOutlet weak var btnTwo: UIButton!
+    @IBOutlet weak var btnOne: UIButton!
+    @IBOutlet weak var btnSubmit: UIButton!
+    
+    enum AttachmentType: String{
+        case camera, video, photoLibrary
+    }
+    
+    var option = Int()
+    var titleStr = String()
+    var type = String()
+    var selectedImage = UIImage()
+    
+    // MARK: - Lifecycle
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+
+        // Additional setup after loading the view.
+        
+        btnSubmit.isHidden = true
+        btnOne.tag = option
+        
+        switch option {
+        case 101:
+            btnOne.isHidden = false
+            btnTwo.isHidden = false
+        case 102:
+            btnOne.isHidden = false
+            btnTwo.isHidden = true
+            btnOne.setTitle("Select Video", for: .normal)
+        case 103:
+            btnOne.isHidden = false
+            btnTwo.isHidden = true
+            btnTwo.setTitle("Select Document", for: .normal)
+        default:
+            break
+            
+        }
+    }
+    
+    // MARK: - Actions
+    
+    
+    @IBAction func onClick(_ sender: Any) {
+        switch option {
+        case 101:
+            authorisationStatus(attachmentTypeEnum: .camera, vc: self)
+        case 102:
+             authorisationStatus(attachmentTypeEnum: .video, vc: self)
+        case 103:
+            documentPicker()
+        default:
+            break
+            
+        }
+    }
+    
+    @IBAction func didLibraryButtonClicked(_ sender: Any) {
+         authorisationStatus(attachmentTypeEnum: .photoLibrary, vc: self)
+    }
+    
+    @IBAction func onSubmit(_ sender: Any) {
+        switch option {
+        case 101:
+            uploadFiles(with: "image")
+        case 102:
+            uploadFiles(with: "video")
+        case 103:
+            uploadFiles(with: "file")
+        default:
+            break
+        }
+    }
+    
+    func authorisationStatus(attachmentTypeEnum: AttachmentType, vc: UIViewController){
+        
+        if attachmentTypeEnum ==  AttachmentType.camera {
+            let status = AVCaptureDevice.authorizationStatus(for: .video)
+            switch status {
+            case .authorized: // The user has previously granted access to the camera.
+                self.openCamera()
+                
+            case .notDetermined: // The user has not yet been asked for camera access.
+                AVCaptureDevice.requestAccess(for: .video) { granted in
+                    if granted {
+                        self.openCamera()
+                    }
+                }
+                //denied - The user has previously denied access.
+            //restricted - The user can't grant access due to restrictions.
+            case .denied, .restricted:
+                
+                return
+                
+            default:
+                break
+            }
+        } else if attachmentTypeEnum == AttachmentType.photoLibrary || attachmentTypeEnum == AttachmentType.video {
+            let status = PHPhotoLibrary.authorizationStatus()
+            switch status{
+            case .authorized:
+                if attachmentTypeEnum == AttachmentType.photoLibrary{
+                    photoLibrary()
+                }
+                
+                if attachmentTypeEnum == AttachmentType.video{
+                    videoLibrary()
+                }
+            case .denied, .restricted:
+               alert(message: "Access denied")
+            case .notDetermined:
+                PHPhotoLibrary.requestAuthorization({ (status) in
+                    if status == PHAuthorizationStatus.authorized{
+                        // photo library access given
+                        self.photoLibrary()
+                    }
+                    if attachmentTypeEnum == AttachmentType.video{
+                        self.videoLibrary()
+                    }
+                })
+            default:
+                break
+            }
+        }
+    }
+    
+    // MARK: - Helper Functions
+    
+    // Camera
+    func openCamera(){
+        if UIImagePickerController.isSourceTypeAvailable(.camera){
+            let myPickerController = UIImagePickerController()
+            myPickerController.delegate = self
+            myPickerController.sourceType = .camera
+            self.present(myPickerController, animated: true, completion: nil)
+        }
+    }
+    
+    // Photos
+    func photoLibrary(){
+        if UIImagePickerController.isSourceTypeAvailable(.photoLibrary){
+            let myPickerController = UIImagePickerController()
+            myPickerController.delegate = self
+            myPickerController.sourceType = .photoLibrary
+            self.present(myPickerController, animated: true, completion: nil)
+        }
+    }
+        
+        // Videos
+        func videoLibrary(){
+            if UIImagePickerController.isSourceTypeAvailable(.photoLibrary){
+                let myPickerController = UIImagePickerController()
+                myPickerController.delegate = self
+                myPickerController.sourceType = .photoLibrary
+                myPickerController.mediaTypes = [kUTTypeMovie as String, kUTTypeVideo as String]
+                self.present(myPickerController, animated: true, completion: nil)
+            }
+        }
+        
+        // Documents
+        func documentPicker(){
+            let importMenu = UIDocumentPickerViewController(documentTypes: [String(kUTTypePDF)], in: .import)
+            importMenu.delegate = self
+            importMenu.modalPresentationStyle = .formSheet
+            self.present(importMenu, animated: true, completion: nil)
+        }
+        
+    // MARK: - WebService
+    
+    func uploadFiles(with type: String) {
+        let parameters = ["title": "Midhun",
+            "user_name": "1234",
+            "type": type
+            ]
+        
+        let imgData = selectedImage.jpegData(compressionQuality: 1)
+        
+        Alamofire.upload(
+            multipartFormData: { MultipartFormData in
+                
+                for (key, value) in parameters {
+                    MultipartFormData.append(value.data(using: String.Encoding.utf8)!, withName: key)
+                }
+                
+                MultipartFormData.append(imgData!, withName: "uploaded_file", fileName: "swift_file.jpeg", mimeType: "image/jpeg")
+                
+                
+        }, to: "https://a2itservices.com/machine_test/test/webservices/insert_documents.php") { (result) in
+            
+            switch result {
+            case .success(let upload, _, _):
+                
+                upload.responseJSON { response in
+                    self.performSegue(withIdentifier: Segue.tolist.identifier, sender: self)
+                }
+                
+            case .failure(let encodingError): break
+            print(encodingError.localizedDescription)
+            }            
+        }
+    }
+        
+        
+
+    /*
+    // MARK: - Navigation
+
+    // In a storyboard-based application, you will often want to do a little preparation before navigation
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        // Get the new view controller using segue.destination.
+        // Pass the selected object to the new view controller.
+    }
+    */
+
+}
+
+// MARK: - Document picker and menu delegate methods
+
+extension SecondViewController: UIDocumentPickerDelegate, UIDocumentMenuDelegate {
+    
+    func documentMenu(_ documentMenu: UIDocumentMenuViewController, didPickDocumentPicker documentPicker: UIDocumentPickerViewController) {
+        documentPicker.delegate = self
+        self.present(documentPicker, animated: true, completion: nil)
+    }
+    
+    func documentPicker(_ controller: UIDocumentPickerViewController, didPickDocumentAt url: URL) {
+        print("url", url)
+//        self.filePickedBlock?(url)
+    }
+    
+    //    Method to handle cancel action.
+    func documentPickerWasCancelled(_ controller: UIDocumentPickerViewController) {
+        self.dismiss(animated: true, completion: nil)
+    }
+}
+
+// MARK: - Image access delegates
+
+extension SecondViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+    
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+        
+        // To handle image
+        if let image = info[UIImagePickerController.InfoKey.originalImage] as? UIImage {
+            selectedImage = image
+            btnSubmit.isHidden = false
+        } else{
+            print("Something went wrong in  image")
+        }
+        // To handle video
+        if let videoUrl = info[UIImagePickerController.InfoKey.mediaURL] as? NSURL{
+            print("videourl: ", videoUrl)
+            //trying compression of video
+            let data = NSData(contentsOf: videoUrl as URL)!
+            print("File size before compression: \(Double(data.length / 1048576)) mb")
+            
+        }
+        else{
+            print("Something went wrong in  video")
+        }
+        self.dismiss(animated: true, completion: nil)
+    }
+}
+
