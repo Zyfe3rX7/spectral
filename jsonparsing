@@ -1,0 +1,28 @@
+
+import swiftyjson
+import alamofire
+
+let data = JSON(response.result.value)
+
+guard let value = data["USD_ILS"]["val"].string else {
+        return
+}
+
+print(value)
+
+
+OR
+
+func makeRequest(){
+    Alamofire.request("http://free.currencyconverterapi.com/api/v3/convert?q=USD_ILS&compact=y").responseJSON { response in
+        if let JSON = response.result.value {
+            if let dict = JSON as? Dictionary<String,Any> {
+                if let value = dict["USD_ILS"] as? Dictionary<String,Any> {
+                    if let val = value["val"] as? Double {
+                        print(val)
+                    }
+                }
+            }
+        }
+    }
+}
